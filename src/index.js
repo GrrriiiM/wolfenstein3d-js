@@ -8,7 +8,7 @@ let renderer = new Renderer(local);
 let requestFrame;
 
 function frame(time) {
-    renderer.drawMap2d();
+    renderer.draw();
     requestFrame(frame);
 }
 

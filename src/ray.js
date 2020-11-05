@@ -1,5 +1,6 @@
 import { Config } from "./config.js";
 import { Vector } from "./vector.js";
+import { Wall } from "./wall.js";
 
 export class Ray {
     constructor(player, angle, index) {
@@ -10,7 +11,7 @@ export class Ray {
 
     calc() {
         let blocks = this.player.map2d.blocks;
-        let angle = (this.player.angle + this.angle) % (Math.PI * 2);
+        let angle = ((this.player.angle + this.angle) + Math.PI * 2) % (Math.PI * 2);
         let h = this.calcHorizontal(angle, blocks);
         let v = this.calcVertical(angle, blocks);
         let r;
@@ -25,9 +26,11 @@ export class Ray {
         }
         if (r) {
             this.pos = r.pos;
-            this.block = r.block;
+            this.wall = r.wall;
             this.vertical = r.vertical;
             this.invert = r.invert;
+            this.decorations = [];
+            this.getDecorations(angle);
         }
     }
 
@@ -69,7 +72,6 @@ export class Ray {
     }
 
     calcRayPosition(posX, posY, invert, vertical) {
-        let map2d = this.player.map2d;
         let pos = new Vector(posX, posY).add(this.player.pos);
         let posOffset = pos.copy()
         if (invert) {
@@ -77,7 +79,52 @@ export class Ray {
             if (vertical) posOffset.x -= Config.blockSize;
         }
         posOffset.div(Config.blockSize).floor();
-        let block = this.player.map2d.getBlock(posOffset.x, posOffset.y);
-        if (block) return { block: block, pos: pos, vertical: vertical, invert: invert };
+        let wall = this.player.map2d.getWall(posOffset.x, posOffset.y);
+        if (wall) return { wall: wall, pos: pos, vertical: vertical, invert: invert };
+    }
+
+    getDecorations(angle) {
+        if (angle > 3 * (Math.PI / 2) || angle < Math.PI / 2) {
+            for (let i = 0; i < this.wall.x - this.player.x; i++) {
+                let x = ((i + 1) * Config.blockSize - this.player.offset.x);
+                let y = (Math.tan(angle) * x);
+                let pos = new Vector(x, y).add(this.player.pos);
+                let posOffset = pos.copy()
+                posOffset.div(Config.blockSize).floor();
+                let decoration = this.player.map2d.getDecoration(posOffset.x, posOffset.y);
+                if (decoration) this.decorations.push(decoration);
+            }
+        } else {
+            for (let i = this.player.x; i > this.wall.x; i--) {
+                let x = ((i - this.player.x) * Config.blockSize - this.player.offset.x);
+                let y = (Math.tan(angle) * x);
+                let pos = new Vector(x, y).add(this.player.pos);
+                let posOffset = pos.copy()
+                posOffset.div(Config.blockSize).floor();
+                let decoration = this.player.map2d.getDecoration(posOffset.x, posOffset.y);
+                if (decoration) this.decorations.push(decoration);
+            }
+        }
+        if (angle > 0 && angle < Math.PI) {
+            for (let i = 0; i < this.wall.y - this.player.y; i++) {
+                let y = ((i + 1) * Config.blockSize - this.player.offset.y);
+                let x = (Math.tan(Math.PI / 2 - angle) * y);
+                let pos = new Vector(x, y).add(this.player.pos);
+                let posOffset = pos.copy()
+                posOffset.div(Config.blockSize).floor();
+                let decoration = this.player.map2d.getDecoration(posOffset.x, posOffset.y);
+                if (decoration) this.decorations.push(decoration);
+            }
+        } else {
+            for (let i = this.player.y; i > this.wall.y; i--) {
+                let y = ((i - this.player.y) * Config.blockSize - this.player.offset.y);
+                let x = Math.tan(Math.PI / 2 - angle) * y;
+                let pos = new Vector(x, y).add(this.player.pos);
+                let posOffset = pos.copy()
+                posOffset.div(Config.blockSize).floor();
+                let decoration = this.player.map2d.getDecoration(posOffset.x, posOffset.y);
+                if (decoration) this.decorations.push(decoration);
+            }
+        }
     }
 }
