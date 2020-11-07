@@ -8,6 +8,8 @@ export class Vector {
 
     get mag() { return Math.sqrt(this.magQ); }
 
+    get ang() { return Math.atan2(this.y, this.x); }
+
     set(v) {
         this.x = v.x;
         this.y = v.y;

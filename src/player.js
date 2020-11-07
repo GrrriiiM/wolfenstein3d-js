@@ -10,6 +10,7 @@ export class Player extends Vector {
         this.offset = new Vector(Config.blockSize / 2);
         this.pos = this.copy().mult(Config.blockSize).add(this.offset);
         this.angle = 0;
+        this.rayAngle = Math.PI / 3;
         this.createRays();
     }
 
@@ -20,12 +21,11 @@ export class Player extends Vector {
     createRays() {
         this.rays = [];
         let c = Config.rayCount;
-        let r = Math.PI / 3;
+        let r = this.rayAngle;
         if (c == 1) this.rays.push(new Ray(this, 0, 0));
         else {
             c = c % 2 ? c : c + 1;
-            var t = (r);
-            let s = t / (c - 1);
+            let s = r / (c - 1);
             for (let i = 0; i < c; i++) {
                 this.rays.push(new Ray(this, (s * i) - (r / 2), i));
             }
@@ -35,8 +35,30 @@ export class Player extends Vector {
     update() {
         if (this.movingFront) this.moveFront();
         if (this.movingBack) this.moveBack();
+        if (this.movingRight) this.moveRight();
+        if (this.movingLeft) this.moveLeft();
         if (this.rotatingLeft) this.rotateLeft();
         if (this.rotatingRight) this.rotateRight();
+        this.decorations = this.map2d.decorations.filter(_ => {
+            let decorationPos = _.pos.copy();
+            decorationPos.x += Config.blockSize / 2;
+            decorationPos.y += Config.blockSize / 2;
+            decorationPos.sub(this.pos);
+            decorationPos.rotate(-this.angle);
+            decorationPos.y -= Config.blockSize / 2;
+            decorationPos.x -= Config.blockSize / 2;
+            if (decorationPos.x <= 0) return false;
+            let decorationAngleStart = decorationPos.ang;
+            decorationPos.y += Config.blockSize;
+            let decorationAngleEnd = decorationPos.ang;
+            let rayAngleStart = this.rayAngle / -2;
+            let rayAngleEnd = this.rayAngle / 2;
+            if (decorationAngleStart <= rayAngleEnd && rayAngleStart <= decorationAngleEnd) {
+                return true;
+            } else {
+                return false;
+            }
+        });
         this.calcRay();
     }
 
@@ -46,6 +68,14 @@ export class Player extends Vector {
 
     moveBack() {
         this.move({ x: -Config.playerMoveVelocity, y: 0 });
+    }
+
+    moveRight() {
+        this.move({ x: 0, y: Config.playerMoveVelocity });
+    }
+
+    moveLeft() {
+        this.move({ x: 0, y: -Config.playerMoveVelocity });
     }
 
     rotateLeft() {

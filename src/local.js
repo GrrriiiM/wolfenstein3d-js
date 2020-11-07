@@ -30,6 +30,22 @@ export class Local {
         this.server.playerStopMoveBack(this.hash);
     }
 
+    startMoveRight() {
+        this.server.playerStartMoveRight(this.hash);
+    }
+
+    stopMoveRight() {
+        this.server.playerStopMoveRight(this.hash);
+    }
+
+    startMoveLeft() {
+        this.server.playerStartMoveLeft(this.hash);
+    }
+
+    stopMoveLeft() {
+        this.server.playerStopMoveLeft(this.hash);
+    }
+
     startRotateLeft() {
         this.server.playerStartRotateLeft(this.hash);
     }

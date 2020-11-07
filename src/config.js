@@ -1,6 +1,6 @@
 const Config = {
     blockSize: 64,
-    rayCount: 320,
+    rayCount: 200,
     playerMoveVelocity: 2,
     playerRotateVelocity: Math.PI / 200
 };

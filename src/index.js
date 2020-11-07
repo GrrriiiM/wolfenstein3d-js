@@ -23,8 +23,10 @@ window.onkeydown = (e) => {
     switch (e.key.toUpperCase()) {
         case "W": local.startMoveFront(); break;
         case "S": local.startMoveBack(); break;
-        case "A": local.startRotateLeft(); break;
-        case "D": local.startRotateRight(); break;
+        case "A": local.startMoveLeft(); break;
+        case "D": local.startMoveRight(); break;
+        case "ARROWRIGHT": local.startRotateRight(); break;
+        case "ARROWLEFT": local.startRotateLeft(); break;
         default: break;
     }
 }
@@ -33,8 +35,10 @@ window.onkeyup = (e) => {
     switch (e.key.toUpperCase()) {
         case "W": local.stopMoveFront(); break;
         case "S": local.stopMoveBack(); break;
-        case "A": local.stopRotateLeft(); break;
-        case "D": local.stopRotateRight(); break;
+        case "A": local.stopMoveLeft(); break;
+        case "D": local.stopMoveRight(); break;
+        case "ARROWRIGHT": local.stopRotateRight(); break;
+        case "ARROWLEFT": local.stopRotateLeft(); break;
         default: break;
     }   
 }

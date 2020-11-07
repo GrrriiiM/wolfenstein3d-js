@@ -1,4 +1,5 @@
 import { Config } from "./config.js";
+import { Decoration } from "./decoration.js";
 import { Vector } from "./vector.js";
 
 export class Renderer {
@@ -38,53 +39,53 @@ export class Renderer {
     }
 
     draw() {
+        this.ctx.imageSmoothingEnabled = false;
         this.ctx.fillStyle = "black";
         this.ctx.fillRect(0, 0, this.w, this.h);
         this.drawFov();
-        this.drawMap2d();
+        // this.drawMap2d();
     }
 
     drawMap2d() {
         let state = this.connection?.state;
-        let density = 1;
+        let density = 0.25;
         if (state) {
             let map2d = state.map2d;
-            for (let block of map2d.walls.concat(map2d.decorations)) {
-                this.ctx.imageSmoothingEnabled = false;
+            let player = map2d.players[0];
+            for (let wall of map2d.walls) {
+                
                 this.ctx.drawImage(
-                    this.images[block.render.name],
-                    block.render.x,
-                    block.render.y,
-                    block.render.w,
-                    block.render.h,
-                    block.pos.x * density,
-                    block.pos.y * density,
-                    block.render.w * density,
-                    block.render.h * density);
-
-                let imgd = this.ctx.getImageData(
-                    block.pos.x * density,
-                    block.pos.y * density,
-                    block.render.w * density,
-                    block.render.h * density);
-                let pixels = imgd.data;
-                let transparency = { r: 0, g: 0, b: 0, a: 0 };
-
-                for (var i = 0; i < pixels.length; i += 4) {
-                    let r = pixels[i];
-                    let g = pixels[i + 1];
-                    let b = pixels[i + 2];
-
-                    if (r == 152 && g == 0 && b == 136) {
-                        pixels[i] = transparency.r;
-                        pixels[i + 1] = transparency.g;
-                        pixels[i + 2] = transparency.b;
-                        pixels[i + 3] = transparency.a;
-                    }
-                }
-
-                this.ctx.putImageData(imgd, block.pos.x * density, block.pos.y * density);
+                    this.images[wall.render.name],
+                    wall.render.x,
+                    wall.render.y,
+                    wall.render.w,
+                    wall.render.h,
+                    wall.pos.x * density,
+                    wall.pos.y * density,
+                    wall.render.w * density,
+                    wall.render.h * density);
             }
+            for (let decoration of map2d.decorations) {
+                this.ctx.imageSmoothingEnabled = false;
+
+                // this.ctx.save();
+                // this.ctx.translate((decoration.pos.x + Config.blockSize / 2) * density, (decoration.pos.y + Config.blockSize / 2) * density);
+                // this.ctx.rotate(player.angle);
+
+                this.ctx.drawImage(
+                    this.images[decoration.render.name],
+                    decoration.render.x,
+                    decoration.render.y,
+                    decoration.render.w,
+                    decoration.render.h,
+                    decoration.pos.x * density,
+                    decoration.pos.y * density,
+                    decoration.render.w * density,
+                    decoration.render.h * density);
+                    
+                //this.ctx.restore();
+            }
+
             for (let player of map2d.players) {
                 this.ctx.strokeStyle = "green";
                 let pos = new Vector(player.pos.x, player.pos.y);
@@ -119,7 +120,9 @@ export class Renderer {
                 let x = i * w;
                 let wall = ray.wall;
                 let sw;
-                let h = ((this.h * 50) / (player.pos.copy().sub(ray.pos).mag + 1));
+                let dist = player.pos.copy().sub(ray.pos).mag;
+                dist *= Math.cos(ray.angle);
+                let h = ((this.h * 60) / (dist + 1));
                 let y = this.h / 2 - h / 2;
                 if (!ray.vertical) {
                     sw = ray.pos.x - wall.pos.x;
@@ -138,26 +141,31 @@ export class Renderer {
                         w,
                         h);
                 }
-                ray.decorations.forEach((decoration) => {
-                    let x = i * w;
-                    let sw;
-                    let h = ((this.h * 50) / (player.pos.copy().sub(decoration.pos).mag + 1));
-                    let y = this.h / 2 - h / 2;
-                    if (!ray.vertical) {
-                        sw = ray.pos.x - decoration.pos.x;
-                    } else {
-                        sw = ray.pos.y - decoration.pos.y;
-                    }
+                ray.decorations.sort((a, b) => b.dist - a.dist).forEach((_) => {
+                    // let dist = decoration.pos.copy().add({ x: Config.blockSize / 2, y: Config.blockSize / 2 }).sub(player.pos);
+                    // dist.rotate(-player.angle);
+                    // // if (player.angle > Math.PI) dist.x -= Config.blockSize/2;
+                    // // else dist.x += Config.blockSize/2; 
+                    // let disty = Math.sin(ray.angle) * dist.x;
+                    // disty = dist.y - disty;
+                    // disty -= Config.blockSize / 2;
+                    // let sx = disty % Config.blockSize;
+                    let h1 = ((this.h * 60) / (_.x));
+                    // if (sx < 0) sx = Config.blockSize + sx;
+                    let p = player.pos.copy();
+                    p.sub(_.decoration.pos);
+
                     this.ctx.drawImage(
-                        this.images[decoration.render.name],
-                        decoration.render.x + Math.floor(sw),
-                        decoration.render.y,
+                        this.images[_.decoration.render.name],
+                        _.decoration.render.x + (Config.blockSize - Math.floor(_.y)) - Config.blockSize,
+                        _.decoration.render.y,
                         1,
-                        decoration.render.h,
+                        _.decoration.render.h,
                         x,
-                        y,
+                        this.h/2 - h1/2,
                         w,
-                        h);
+                        h1);
+
                 });
             });
         }
