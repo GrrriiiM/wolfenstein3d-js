@@ -43,7 +43,7 @@ export class Renderer {
         this.ctx.fillStyle = "black";
         this.ctx.fillRect(0, 0, this.w, this.h);
         this.drawFov();
-        // this.drawMap2d();
+        //this.drawMap2d();
     }
 
     drawMap2d() {
