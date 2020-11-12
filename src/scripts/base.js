@@ -1,11 +1,10 @@
-import { Block } from "./block.js";
 import { Vector2d } from "./vector2d.js";
 
 export class Base extends Vector2d {
-    constructor(x, y, blockSize) {
+    constructor(x, y) {
         super(0, 0);
         this.onchange = this._update;
-        this.block = new Block(0, 0, blockSize);
+        this.block = new Vector2d(0, 0);
         this.offset = new Vector2d();
         this.setXY(x, y);
     }
@@ -18,8 +17,8 @@ export class Base extends Vector2d {
 
     _update() {
         this.block.setXY(
-            Math.floor(this._x / this.block.size), 
-            Math.floor(this._y / this.block.size));
-        this.offset.set(this.copy().sub(this.block.min));
+            Math.floor(this._x), 
+            Math.floor(this._y));
+        this.offset.set(this.copy().sub(this.block));
     }
 }

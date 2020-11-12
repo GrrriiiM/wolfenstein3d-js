@@ -2,8 +2,8 @@ import { Base } from "./base";
 import { View } from "./view";
 
 export class Person extends Base {
-    constructor(blockX, blockY, viewAngle, typeId, map2d) {
-        super((blockX + 0.5) * map2d.config.blockSize, (blockY + 0.5) * map2d.config.blockSize, map2d.config.blockSize);
+    constructor(x, y , viewAngle, typeId, map2d) {
+        super(x, y);
         this.personId = typeId;
         this.map2d = map2d;
         this.view = new View(this, viewAngle);

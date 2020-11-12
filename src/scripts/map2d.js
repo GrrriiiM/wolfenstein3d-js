@@ -5,8 +5,8 @@ import { Wall } from "./wall";
 export class Map2d {
     constructor(walls, items, sizeX, sizeY, config) {
         this.config = config;
-        this.walls = walls.map(_ => new Wall(_.x * this.config.blockSize, _.y * this.config.blockSize, this.config.blockSize, _.id));
-        this.items = items.map(_ => Item.create(_.x * this.config.blockSize, _.y * this.config.blockSize, this.config.blockSize, _.id));
+        this.walls = walls.map(_ => new Wall(_.x, _.y, this.config.blockSize, _.id));
+        this.items = items.map(_ => Item.create(_.x, _.y, this.config.blockSize, _.id));
         this.size = { x: sizeX, y: sizeY };
         this.blocks = [];
         for(let wall of this.walls) {
