@@ -1,7 +1,7 @@
-import { Base } from "./base";
-import { View } from "./view";
+const { Block } = require("./block");
+const { View } = require("./view");
 
-export class Person extends Base {
+class Person extends Block {
     constructor(x, y , viewAngle, typeId, map2d) {
         super(x, y);
         this.personId = typeId;
@@ -43,6 +43,8 @@ export class Person extends Base {
     }
 
     move(pos) {
-        this.rotate(-this.view.angle).add(pos).rotate(this.view.angle);
+        this.pos.rotate(-this.view.angle).add(pos).rotate(this.view.angle);
     }
 }
+
+module.exports = { Person };

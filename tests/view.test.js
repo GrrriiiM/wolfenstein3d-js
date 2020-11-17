@@ -1,4 +1,4 @@
-const { View } = require("../src/scripts/view")
+const { View } = require("../src/server/view")
 
 test('contructor success', () => {
     let view = new View({}, Math.PI);

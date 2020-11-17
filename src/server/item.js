@@ -1,6 +1,6 @@
-import { Base } from "./base";
+const { Block } = require("./block");
 
-export class Item extends Base {
+export class Item extends Block {
     constructor(x, y, blockSize, typeId) {
         super(x, y, blockSize)
         this.typeId = typeId;
@@ -10,3 +10,5 @@ export class Item extends Base {
         return new Item(x, y, blockSize, spriteId);
     }
 }
+
+module.exports = { Item };

@@ -1,8 +1,7 @@
-import { Config } from "./config";
-import { Item } from "./item";
-import { Wall } from "./wall";
+const { Item } = require("./item");
+const { Wall } = require("./wall");
 
-export class Map2d {
+class Map2d {
     constructor(walls, items, sizeX, sizeY, config) {
         this.config = config;
         this.walls = walls.map(_ => new Wall(_.x, _.y, this.config.blockSize, _.id));
@@ -10,12 +9,12 @@ export class Map2d {
         this.size = { x: sizeX, y: sizeY };
         this.blocks = [];
         for(let wall of this.walls) {
-            if (!this.blocks[wall.block.x]) this.blocks[wall.block.x] = [];
-            this.blocks[wall.block.x][wall.block.y] = wall;
+            if (!this.blocks[wall.x]) this.blocks[wall.x] = [];
+            this.blocks[wall.x][wall.y] = wall;
         }
         for(let item of this.items) {
-            if (!this.blocks[item.block.x]) this.blocks[item.block.x] = [];
-            this.blocks[item.block.x][item.block.y] = item;
+            if (!this.blocks[item.x]) this.blocks[item.x] = [];
+            this.blocks[item.x][item.y] = item;
         }
     }
 
@@ -39,3 +38,5 @@ export class Map2d {
         return new Map2d(walls, items, lengthX, l.length, config);
     }
 }
+
+module.exports = { Map2d };

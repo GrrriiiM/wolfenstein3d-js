@@ -1,4 +1,4 @@
-export class View {
+class View {
     constructor(person, angle) {
         this.person = person;
         this.angleTotal = Math.PI / 3;
@@ -19,3 +19,5 @@ export class View {
         if (this.angleMax < 0) this.angleMax += Math.PI * 2;
     }
 }
+
+module.exports = { View };

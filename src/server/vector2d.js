@@ -1,4 +1,4 @@
-export class Vector2d {
+class Vector2d {
     constructor(x, y, onchange) {
         this.onchange = onchange
         this.setXY(x, y);
@@ -55,7 +55,7 @@ export class Vector2d {
         const sin = Math.sin(r);
         const x = this.x;
         const y = this.y;
-        this.setXY(this.x * cos - this.y * sin, this.x * sin + this.y * cos);
+        this.setXY(x * cos - y * sin, x * sin + y * cos);
         return this;
     }
     
@@ -64,3 +64,5 @@ export class Vector2d {
         return this;
     }
 }
+
+module.exports = { Vector2d };

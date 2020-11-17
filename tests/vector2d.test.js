@@ -1,4 +1,4 @@
-const { Vector2d } = require("../src/scripts/vector2d")
+const { Vector2d } = require("../src/server/vector2d")
 
 test('contructor success', () => {
     const v = new Vector2d(5, 10);

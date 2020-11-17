@@ -1,4 +1,4 @@
-export const Config = {
+const Config = {
     blockSize: 64,
     rayCount: 200,
     playerMoveVelocity: 0.1,
@@ -8,3 +8,5 @@ export const Config = {
     map2dWallImageIdRange: 55,
     map2dSpriteImageIdRange: 155
 }
+
+module.exports = { Config }
