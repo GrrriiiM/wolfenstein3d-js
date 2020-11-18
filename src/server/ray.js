@@ -8,38 +8,40 @@ export class Ray extends Block {
     }
 
     cast() {
+        const angle = this.calcAngle();
         const map2d = this.view.person.map2d;
         const dirX = this.calcDirV();
         const dirY = this.calcDirH();
-        const distH = this.calcDistH();
-        const distV = this.calcDistV();
-        let deltaDistH = this.calcDeltaDistH();
-        let deltaDistV = this.calcDeltaDistV();
+        let distH = this.calcDistH();
+        let distV = this.calcDistV();
+        const deltaDistH = this.calcDeltaDistH();
+        const deltaDistV = this.calcDeltaDistV();
         let blockX = this.view.person.block.x;
         let blockY = this.view.person.block.y;
-        let vertical = false;
 
         while((blockX >= 0 && blockX < map2d.maxX) || (blockY >= 0 && blockY < map2d.maxY)) {
             if (distH < distV) {
-                distH += deltaDistH;
                 blockY += dirY;
-                vertical = false;
-            } else {
-                distV += deltaDistV;
-                blockX += dirX;
-                vertical = true;
-            }
-            let block = this.view.person.map2d.blocks[blockX][blockY];
-            if (block) {
-                this.block = block;
-                if (vertical) {
-                    this.pos.setXY(Math.sin(angle) * distV, Math.cos(angle) * distV).add(this.view.person);
-                    this.vertical = true;
-                } else {
-                    this.pos.setXY(Math.sin(angle) * distH, Math.cos(angle) * distV).add(this.view.person);
-                    this.vertical = true;
+                this.wall = this.view.person.map2d.getWall(blockX, blockY);
+                if (this.wall) {
+                    this.pos.setXY(Math.cos(angle) * distH, Math.sin(angle) * distH).add(this.view.person.pos);
+                    this.distAdjusted = Math.abs(Math.sin(this.angle) * distH);
+                    this.wallOffset = this.offset.x;
+                    this.vertical = false;
+                    return;
                 }
-                return;
+                distH += deltaDistH;
+            } else {
+                blockX += dirX;
+                this.wall = this.view.person.map2d.getWall(blockX, blockY);
+                if (this.wall) {
+                    this.pos.setXY(Math.cos(angle) * distV, Math.sin(angle) * distV).add(this.view.person.pos);
+                    this.distAdjusted = Math.abs(Math.cos(this.angle) * distV);
+                    this.wallOffset = this.offset.y;
+                    this.vertical = true;
+                    return;
+                }
+                distV += deltaDistV
             }
         }
     }

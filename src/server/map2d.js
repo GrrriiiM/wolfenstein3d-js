@@ -4,8 +4,8 @@ const { Wall } = require("./wall");
 class Map2d {
     constructor(walls, items, sizeX, sizeY, config) {
         this.config = config;
-        this.walls = walls.map(_ => new Wall(_.x, _.y, this.config.blockSize, _.id));
-        this.items = items.map(_ => Item.create(_.x, _.y, this.config.blockSize, _.id));
+        this.walls = walls.map(_ => new Wall(_.x, _.y, _.id));
+        this.items = items.map(_ => Item.create(_.x, _.y, _.id));
         this.size = { x: sizeX, y: sizeY };
         this.blocks = [];
         for(let wall of this.walls) {
@@ -16,6 +16,11 @@ class Map2d {
             if (!this.blocks[item.x]) this.blocks[item.x] = [];
             this.blocks[item.x][item.y] = item;
         }
+    }
+
+    getWall(x, y) {
+        let block = this.blocks[x] ? this.blocks[x][y] : null;
+        return block instanceof Wall ? block : null;
     }
 
     static create(mapPattern, config) {
