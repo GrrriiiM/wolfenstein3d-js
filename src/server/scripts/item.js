@@ -1,6 +1,4 @@
-const { Block } = require("./block");
-
-export class Item extends Block {
+class Item extends require("./block") {
     constructor(x, y, typeId) {
         super(x, y)
         this.typeId = typeId;
@@ -11,4 +9,4 @@ export class Item extends Block {
     }
 }
 
-module.exports = { Item };
+module && (module.exports = Item);

@@ -1,4 +1,4 @@
-const { Block } = require("../src/server/block.js");
+const Block = require("../src/server/scripts/block.js");
 
 test('contructor success', () => {
     const item = new Block(3.2, 7.8);

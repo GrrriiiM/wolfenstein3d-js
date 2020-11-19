@@ -1,13 +1,11 @@
-const { Item } = require("./item");
-const { Wall } = require("./wall");
-
 class Map2d {
     constructor(walls, items, sizeX, sizeY, config) {
         this.config = config;
-        this.walls = walls.map(_ => new Wall(_.x, _.y, _.id));
-        this.items = items.map(_ => Item.create(_.x, _.y, _.id));
+        this.walls = walls.map(_ => new (require("./wall"))(_.x, _.y, _.id));
+        this.items = items.map(_ => (require("./item")).create(_.x, _.y, _.id));
         this.size = { x: sizeX, y: sizeY };
         this.blocks = [];
+        this.players = [];
         for(let wall of this.walls) {
             if (!this.blocks[wall.x]) this.blocks[wall.x] = [];
             this.blocks[wall.x][wall.y] = wall;
@@ -20,7 +18,15 @@ class Map2d {
 
     getWall(x, y) {
         let block = this.blocks[x] ? this.blocks[x][y] : null;
-        return block instanceof Wall ? block : null;
+        return block instanceof require("./wall") ? block : null;
+    }
+
+    addPlayer(player) {
+        this.players.push(player);
+    }
+
+    update() {
+        this.players.forEach(_ => _.update());
     }
 
     static create(mapPattern, config) {
@@ -44,4 +50,4 @@ class Map2d {
     }
 }
 
-module.exports = { Map2d };
+module.exports = Map2d;

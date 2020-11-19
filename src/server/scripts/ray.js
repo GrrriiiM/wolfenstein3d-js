@@ -1,6 +1,4 @@
-const { Block }  = require("./block");
-
-export class Ray extends Block {
+class Ray extends require("./block") {
     constructor(view, angle) {
         super(0, 0);
         this.view = view;
@@ -98,4 +96,4 @@ export class Ray extends Block {
 
 }
 
-module.exports = { Ray };
+module && (module.exports = Ray);

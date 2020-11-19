@@ -1,5 +1,5 @@
-const { Ray } = require("../src/server/ray");
-const { Wall } = require("../src/server/wall");
+const Ray = require("../src/server/scripts/ray");
+const Wall = require("../src/server/scripts/wall");
 
 test("constructor success", () => {
     let ray = new Ray({ angle: 10 }, 20);

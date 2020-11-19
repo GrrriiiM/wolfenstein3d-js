@@ -1,10 +1,8 @@
-const { Vector2d } = require("./vector2d")
-
-export class Block {
+class Block {
     constructor(x, y) {
-        this.pos = new Vector2d(x, y);
+        this.pos = new (require("./vector2d"))(x, y);
         this.pos.onchange = this._onchange.bind(this);
-        this.offset = new Vector2d();
+        this.offset = new (require("./vector2d"))();
         this._onchange();
     }
 
@@ -18,4 +16,4 @@ export class Block {
     }
 }
 
-module.exports = { Block };
+module && (module.exports = Block);

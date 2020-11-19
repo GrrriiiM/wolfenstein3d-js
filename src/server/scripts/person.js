@@ -1,12 +1,9 @@
-const { Block } = require("./block");
-const { View } = require("./view");
-
-class Person extends Block {
+class Person extends require("./block") {
     constructor(x, y , viewAngle, typeId, map2d) {
         super(x, y);
         this.personId = typeId;
         this.map2d = map2d;
-        this.view = new View(this, viewAngle);
+        this.view = new (require("./view"))(this, viewAngle);
     }
 
     update() {
@@ -47,4 +44,4 @@ class Person extends Block {
     }
 }
 
-module.exports = { Person };
+module && (module.exports = Person);

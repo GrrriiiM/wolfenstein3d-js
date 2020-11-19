@@ -20,8 +20,8 @@ class Vector2d {
     }
 
     setXY(x, y) {
-        this._x = x;
-        this._y = y;
+        this._x = x || 0;
+        this._y = y == undefined ? this._x : y;
         !this.onchange || this.onchange();
         return this;
     }
@@ -65,4 +65,4 @@ class Vector2d {
     }
 }
 
-module.exports = { Vector2d };
+module && (module.exports = Vector2d);

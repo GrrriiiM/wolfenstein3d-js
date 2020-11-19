@@ -1,4 +1,4 @@
-const { Person } = require("../src/server/person");
+const Person = require("../src/server/scripts/person");
 
 test('contructor success', () => {
     const config = {        

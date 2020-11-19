@@ -1,4 +1,4 @@
-const { Map2d } = require("../src/server/map2d");
+const Map2d = require("../src/server/scripts/map2d");
 
 test('create success', () => {
     const map2d = Map2d.create(pattern1, { });
