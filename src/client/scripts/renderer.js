@@ -7,13 +7,13 @@ class Renderer {
     constructor(client, elementQuerySelector) {
         this.client = client;
         this.density = 20;
+        
         let querySelector = elementQuerySelector || "body";
         let element = document.querySelector(querySelector);
         this.canvas = document.createElement("canvas");
         this.ctx = this.canvas.getContext("2d");
         this.ctx.imageSmoothingEnabled = false;
         element.appendChild(this.canvas);
-        this.resize();
         this.loadImages(element);
         this.requestFrame;
         this.frame = (time) => {
@@ -25,6 +25,8 @@ class Renderer {
             if (window.requestAnimationFrame) this.requestFrame = (frame) => window.requestAnimationFrame(frame);
             else if (window.webkitRequestAnimationFrame) this.requestFrame = (frame) => window.webkitRequestAnimationFrame(frame);
         }
+
+        this.screen = new Screen(this.ctx);
 
         window.onresize = this.resize.bind(this);
 
@@ -52,6 +54,7 @@ class Renderer {
             }   
         }
 
+        this.resize();
         this.frame();
     }
 
@@ -69,60 +72,87 @@ class Renderer {
     resize() {
         this.w = window.innerWidth;
         this.h = window.innerHeight;
-        this.aw = this.w > (this.h/3)*4 ? (this.h/3)*4 : this.w;
-        this.ah = (this.aw/4) * 3;
-        this.border = (this.ah < this.aw ? this.ah : this.aw) / 30;
-        this.l = this.aw / 300;
-        this.menu = {};
-        this.menu.w = this.aw - this.border * 2;
-        this.menu.h = this.ah / 6;
+        // this.aw = this.w > (this.h/3)*4 ? (this.h/3)*4 : this.w;
+        // this.ah = (this.aw/4) * 3;
+        // this.border = (this.ah < this.aw ? this.ah : this.aw) / 30;
+        // this.l = this.aw / 300;
+        // this.menu = {};
+        // this.menu.w = this.aw - this.border * 2;
+        // this.menu.h = this.ah / 6;
         
-        this.area = {};
-        this.area.w = this.menu.w;
-        this.area.h = this.ah - this.menu.h - this.border * 3;
-        this.area.x = this.w / 2 - this.area.w / 2;
-        this.area.y = this.border;
-        this.menu.x = this.area.x;
-        this.menu.y = this.border * 2 + this.area.h;
+        // this.area = {};
+        // this.area.w = this.menu.w;
+        // this.area.h = this.ah - this.menu.h - this.border * 3;
+        // this.area.x = this.w / 2 - this.area.w / 2;
+        // this.area.y = this.border;
+        // this.menu.x = this.area.x;
+        // this.menu.y = this.border * 2 + this.area.h;
         this.canvas.width = this.w;
         this.canvas.height = this.h;
+        this.screen.resize();
     }
 
     draw() {
-        
         this.ctx.imageSmoothingEnabled = false;
-        this.ctx.fillStyle = "rgb(0, 64, 64)";
-        this.ctx.fillRect(0, 0, this.w, this.h);
-
-        this.ctx.fillStyle = "gray";
-        this.ctx.fillRect(this.area.x, this.area.y, this.area.w, this.area.h);
-        this.ctx.fillStyle = "black";
-        this.ctx.fillRect(this.area.x - this.l, this.area.y - this.l, this.area.w + this.l, this.l);
-        this.ctx.fillRect(this.area.x - this.l, this.area.y - this.l, this.l, this.area.h + this.l);
-
-        this.ctx.fillStyle = "rgb(6, 108, 107)";
-        this.ctx.fillRect(this.area.x - this.l, this.area.y + this.area.h - this.l, this.area.w + this.l * 2, this.l);
-        this.ctx.fillRect(this.area.x + this.area.w, this.area.y - this.l, this.l, this.area.h + this.l);
-
-        this.ctx.fillStyle = "rgb(0, 0, 163)";
-        this.ctx.fillRect(this.menu.x, this.menu.y, this.menu.w, this.menu.h);
-
-
-
-        this.ctx.fillStyle = "black";
-        this.ctx.fillRect(this.menu.x - this.l, this.menu.y - this.l, this.menu.w + this.l, this.l);
-        this.ctx.fillRect(this.menu.x - this.l, this.menu.y - this.l, this.l, this.menu.h + this.l);
-
-        this.ctx.fillStyle = "rgb(6, 108, 107)";
-        this.ctx.fillRect(this.menu.x - this.l, this.menu.y + this.menu.h - this.l, this.menu.w + this.l * 2, this.l);
-        this.ctx.fillRect(this.menu.x + this.menu.w, this.menu.y - this.l, this.l, this.menu.h + this.l);
-
-
-
+        
         if (!this.client.state) return;
+        let p = this.screen.area.w / this.client.state.rays.length;
+        this.ctx.fillStyle = "rgb(56, 56, 56)";
+        this.ctx.fillRect(0, 0, this.screen.w, this.screen.h);
+        this.ctx.fillStyle = "rgb(112, 112, 112)";
+        this.ctx.fillRect(0, this.screen.area.y + this.screen.area.h / 2, this.screen.w, this.screen.h);
+        for(let [i, ray] of this.client.state.rays.entries()) {
+            const h = (this.screen.area.h) / (ray.dist * 3);
+            this.ctx.drawImage(
+                this.images["walls"],
+                ((ray.wallTypeId % 3 * 64) * 2) + Math.floor(64 * (1 - ray.wallOffset)) + (ray.vertical ? 64 : 0),
+                (Math.floor(ray.wallTypeId / 3) * 64),
+                1,
+                64,
+                this.screen.area.x + p * i,
+                this.screen.area.y + (this.screen.area.h / 2 - h / 2),
+                p,
+                h);
+        }
+
+        const imageData = this.ctx.getImageData(this.screen.area.x, this.screen.area.y, this.screen.area.w, this.screen.area.h);
+
+        this.screen.draw();
+
+        this.ctx.putImageData(imageData, this.screen.area.x, this.screen.area.y);
+        
+        // this.ctx.fillStyle = "rgb(0, 64, 64)";
+        // this.ctx.fillRect(0, 0, this.w, this.h);
+
+        // this.ctx.fillStyle = "gray";
+        // this.ctx.fillRect(this.area.x, this.area.y, this.area.w, this.area.h);
+        // this.ctx.fillStyle = "black";
+        // this.ctx.fillRect(this.area.x - this.l, this.area.y - this.l, this.area.w + this.l, this.l);
+        // this.ctx.fillRect(this.area.x - this.l, this.area.y - this.l, this.l, this.area.h + this.l);
+
+        // this.ctx.fillStyle = "rgb(6, 108, 107)";
+        // this.ctx.fillRect(this.area.x - this.l, this.area.y + this.area.h - this.l, this.area.w + this.l * 2, this.l);
+        // this.ctx.fillRect(this.area.x + this.area.w, this.area.y - this.l, this.l, this.area.h + this.l);
+
+        // this.ctx.fillStyle = "rgb(0, 0, 163)";
+        // this.ctx.fillRect(this.menu.x, this.menu.y, this.menu.w, this.menu.h);
+
+
+
+        // this.ctx.fillStyle = "black";
+        // this.ctx.fillRect(this.menu.x - this.l, this.menu.y - this.l, this.menu.w + this.l, this.l);
+        // this.ctx.fillRect(this.menu.x - this.l, this.menu.y - this.l, this.l, this.menu.h + this.l);
+
+        // this.ctx.fillStyle = "rgb(6, 108, 107)";
+        // this.ctx.fillRect(this.menu.x - this.l, this.menu.y + this.menu.h - this.l, this.menu.w + this.l * 2, this.l);
+        // this.ctx.fillRect(this.menu.x + this.menu.w, this.menu.y - this.l, this.l, this.menu.h + this.l);
+
+
+
+        
         const pos = this.client.state.pos;
         const angle = this.client.state.angle;
-        this.ctx.strokeStyle = "red";
+        this.ctx.strokeStyle = "black";
         let p1 = new Vector2d(0.5, 0);
         p1.rotate(angle).add(pos);
         let p2 = new Vector2d(0.5, 0);
@@ -145,6 +175,11 @@ class Renderer {
                 wall.y * this.density,
                 this.density,
                 this.density);
+        }
+
+        for(let ray of this.client.state.rays) {
+            this.ctx.strokeStyle = "red";
+            this.line(this.client.state.pos.x * this.density, this.client.state.pos.y * this.density, ray.x * this.density, ray.y * this.density);
         }
 
     }

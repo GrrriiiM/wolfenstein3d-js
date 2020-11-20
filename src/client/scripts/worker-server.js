@@ -9,6 +9,7 @@ importScripts(
     "../../server/scripts/view.js",
     "../../server/scripts/person.js",
     "../../server/scripts/player.js",
+    "../../server/scripts/ray.js",
     "../../server/scripts/map2d.js");
 
 function require(path) {
@@ -22,13 +23,14 @@ function require(path) {
         case "./person": return Person;
         case "./player": return Player;
         case "./map2d": return Map2d;
+        case "./ray": return Ray;
     }
 }
 
 class WorkerServer {
     constructor(worker) {
         this.worker = worker;
-        this.map2d = Map2d.create(mapPattern1, Config);
+        this.map2d = Map2d.create(mapPattern, Config);
         this.player = new Player(1, 3, 0, "", this.map2d);
         this.map2d.addPlayer(this.player);
         this.worker.onmessage = event => {
@@ -64,7 +66,7 @@ class WorkerServer {
         this.map2d.update();
         this.state = this.player.getState();
         this.worker.postMessage({ command: "state", state: this.state });
-        setTimeout(this.update.bind(this), 1000 / 30);
+        setTimeout(this.update.bind(this), 1000 / 20);
     }
 
     startMoveFront() {

@@ -2,7 +2,7 @@ class Ray extends require("./block") {
     constructor(view, angle) {
         super(0, 0);
         this.view = view;
-        this.angle = angle;
+        this.angle = (angle + Math.PI * 2) % (Math.PI * 2);
     }
 
     cast() {
@@ -14,17 +14,17 @@ class Ray extends require("./block") {
         let distV = this.calcDistV();
         const deltaDistH = this.calcDeltaDistH();
         const deltaDistV = this.calcDeltaDistV();
-        let blockX = this.view.person.block.x;
-        let blockY = this.view.person.block.y;
+        let blockX = this.view.person.x;
+        let blockY = this.view.person.y;
 
-        while((blockX >= 0 && blockX < map2d.maxX) || (blockY >= 0 && blockY < map2d.maxY)) {
+        while((blockX >= 0 && blockX < map2d.size.x) || (blockY >= 0 && blockY < map2d.size.y)) {
             if (distH < distV) {
                 blockY += dirY;
                 this.wall = this.view.person.map2d.getWall(blockX, blockY);
                 if (this.wall) {
                     this.pos.setXY(Math.cos(angle) * distH, Math.sin(angle) * distH).add(this.view.person.pos);
-                    this.distAdjusted = Math.abs(Math.sin(this.angle) * distH);
-                    this.wallOffset = this.offset.x;
+                    this.distAdjusted = Math.abs(Math.cos(this.angle) * distH);
+                    this.wallOffset = this.view.person.y < this.wall.y ? this.offset.x : 1 - this.offset.x;
                     this.vertical = false;
                     return;
                 }
@@ -35,7 +35,7 @@ class Ray extends require("./block") {
                 if (this.wall) {
                     this.pos.setXY(Math.cos(angle) * distV, Math.sin(angle) * distV).add(this.view.person.pos);
                     this.distAdjusted = Math.abs(Math.cos(this.angle) * distV);
-                    this.wallOffset = this.offset.y;
+                    this.wallOffset = this.view.person.x < this.wall.x ? this.offset.y : 1 - this.offset.y;
                     this.vertical = true;
                     return;
                 }
@@ -45,7 +45,7 @@ class Ray extends require("./block") {
     }
 
     calcAngle() {
-        return (this.angle + this.view.person.angle + Math.PI * 2) % (Math.PI * 2);
+        return (this.angle + this.view.angle + Math.PI * 2) % (Math.PI * 2);
     }
 
     calcDirH() {
@@ -67,7 +67,7 @@ class Ray extends require("./block") {
         const dir = this.calcDirH()
         if (dir == 1) return Math.abs((1 - this.view.person.offset.y) / Math.sin(angle));
         if (dir == -1) return Math.abs(this.view.person.offset.y / Math.sin(angle));
-        return 0;
+        return Infinity;
     }
 
     calcDistV() {
@@ -75,7 +75,7 @@ class Ray extends require("./block") {
         const dir = this.calcDirV();
         if (dir == 1) return Math.abs((1 - this.view.person.offset.x) / Math.cos(angle));
         if (dir == -1) return Math.abs(this.view.person.offset.x / Math.cos(angle));
-        return 0;
+        return Infinity;
     }
     
     calcDeltaDistH() {
@@ -83,7 +83,7 @@ class Ray extends require("./block") {
         const dir = this.calcDirH()
         if (dir == 1) return Math.abs((1 + Math.abs(1 - this.view.person.offset.y)) / Math.sin(angle)) - this.calcDistH();
         if (dir == -1) return Math.abs((1 + Math.abs(this.view.person.offset.y)) / Math.sin(angle)) - this.calcDistH();
-        return 0;
+        return Infinity;
     }
 
     calcDeltaDistV() {
@@ -91,7 +91,7 @@ class Ray extends require("./block") {
         const dir = this.calcDirV();
         if (dir == 1) return Math.abs((1 + Math.abs(1 - this.view.person.offset.x)) / Math.cos(angle)) - this.calcDistV();
         if (dir == -1) return Math.abs((1 + Math.abs(this.view.person.offset.x)) / Math.cos(angle)) - this.calcDistV();
-        return 0;
+        return Infinity;
     }
 
 }

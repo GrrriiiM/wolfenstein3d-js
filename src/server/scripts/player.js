@@ -3,6 +3,11 @@ class Player extends require("./person") {
         super(x, y, viewAngle, typeId, map2d);
     }
 
+    update() {
+        super.update();
+        this.view.cast();
+    }
+
     getState() {
         return {
             pos: {
@@ -14,8 +19,16 @@ class Player extends require("./person") {
                 x: _.x,
                 y: _.y,
                 typeId: _.typeId
+            })),
+            rays: this.view.rays.map(_ => ({
+                x: _.pos.x,
+                y: _.pos.y,
+                dist: _.distAdjusted,
+                wallTypeId: _.wall ? _.wall.typeId : null,
+                wallOffset: _.wallOffset,
+                vertical: _.vertical
             }))
-        }
+        };
     }
 }
 
