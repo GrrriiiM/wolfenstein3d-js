@@ -1,8 +1,10 @@
 class Screen {
-    constructor(ctx) {
+    constructor(ctx, w, h) {
         this.ctx = ctx;
-        
-
+        this.w = w;
+        this.h = h;
+        this.margin = 5;
+        this.border = 1;
         this.colors = {
             background: "rgb(0, 64, 64)",
             backgroundBorderDark: "black",
@@ -11,41 +13,19 @@ class Screen {
             displayBorderDark: "rgb(1, 0, 109)",
             displayBorderLight: "rgb(67, 71, 229)",
         };
-    }
-
-    resize() {
-        
-        this.w = window.innerWidth;
-        this.h = window.innerHeight;
-
-        let h = 0;
-        let w = 0;
-        let x = 0
-
-        if (this.w > this.h) {
-            h = this.h;
-            w = this.h / 2 * 3;
-            if (w > this.w) w = this.w;
-            x = this.w / 2 - w / 2;
-        } else {
-            w = this.w;
-            h = this.w / 3 * 2;
-        }
-        this.margin = h / 30;
-        this.border = h / 200;
 
         this.area = { 
-            x: x + this.margin,
+            x: this.margin,
             y: this.margin,
-            w: w - this.margin * 2,
-            h: (h - (this.margin * 4)) / 7 * 6
+            w: this.w - this.margin * 2,
+            h: this.h - (this.margin * 4) - 30
         };
 
         this.display = { 
             x: this.area.x,
-            y: this.margin * 2 + this.area.h,
+            y: this.margin * 3 + this.area.h,
             w: this.area.w,
-            h: h / 7
+            h: 30
         };
 
         this.displayLevel = {

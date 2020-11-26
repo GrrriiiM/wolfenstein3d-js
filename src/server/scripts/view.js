@@ -1,11 +1,11 @@
 class View {
     constructor(person, angle) {
         this.person = person;
-        this.angleTotal = Math.PI / 3;
+        this.angleTotal = (Math.PI / 3);
         this.angle = angle;
         this.rays = [];
-        let c = 400;
-        c = c % 2 ? c : c + 1;
+        let c = 310;
+        // c = c % 2 ? c : c + 1;
         let s = this.angleTotal / (c - 1);
         for (let i = 0; i < c; i++) {
             this.rays.push(new (require('./ray'))(this, (s * i) - (this.angleTotal / 2), i));

@@ -1,6 +1,6 @@
 class WorkerClient {
     constructor() {
-        this.server = new Worker("./client/scripts/worker-server.js");
+        this.server = new Worker("./client/scripts/scenes/game/worker-server.js");
         this.start = () => this.server.postMessage({ command: "start" });
         this.stop = () => this.server.postMessage({ command: "stop" });
         this.startMoveFront = () => this.server.postMessage({ command: "startMoveFront" });

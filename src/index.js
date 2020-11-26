@@ -1,4 +1,5 @@
-const client = new WorkerClient();
-const renderer = new Renderer(client);
+const renderer = new Renderer();
 
-client.start();
+renderer.start();
+
+renderer.sceneManager.goToGame();

@@ -13,7 +13,6 @@ export class Renderer {
         element.appendChild(this.canvas);
         this.resize();
         this.loadImages(element);
-
     }
 
     loadImages(element) {

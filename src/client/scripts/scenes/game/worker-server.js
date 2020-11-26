@@ -1,16 +1,16 @@
 const module = false;
 
 importScripts(
-    "../../server/scripts/config.js",
-    "../../server/scripts/vector2d.js",
-    "../../server/scripts/block.js",
-    "../../server/scripts/item.js",
-    "../../server/scripts/wall.js",
-    "../../server/scripts/view.js",
-    "../../server/scripts/person.js",
-    "../../server/scripts/player.js",
-    "../../server/scripts/ray.js",
-    "../../server/scripts/map2d.js");
+    "../../../../server/scripts/config.js",
+    "../../../../server/scripts/vector2d.js",
+    "../../../../server/scripts/block.js",
+    "../../../../server/scripts/item.js",
+    "../../../../server/scripts/wall.js",
+    "../../../../server/scripts/view.js",
+    "../../../../server/scripts/person.js",
+    "../../../../server/scripts/player.js",
+    "../../../../server/scripts/ray.js",
+    "../../../../server/scripts/map2d.js");
 
 function require(path) {
     switch (path) {
