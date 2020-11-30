@@ -20,13 +20,21 @@ class Player extends require("./person") {
                 y: _.y,
                 typeId: _.typeId
             })),
-            rays: this.view.rays.map(_ => ({
-                x: _.pos.x,
-                y: _.pos.y,
-                dist: _.distAdjusted,
-                wallTypeId: _.wall ? _.wall.typeId : null,
-                wallOffset: _.wallOffset,
-                vertical: _.vertical
+            rays: this.view.rays.map(ray => ({
+                x: ray.pos.x,
+                y: ray.pos.y,
+                dist: ray.distAdjusted,
+                wallTypeId: ray.wall ? ray.wall.typeId : null,
+                wallOffset: ray.wallOffset,
+                isVertical: ray.isVertical,
+                isInverted: ray.isInverted,
+                isDoor: ray.isDoor,
+                items: ray.items.map(item => ({
+                    typeId: item.item.typeId,
+                    isDoor: item.item.isDoor,
+                    dist: item.distAdjusted,
+                    offset: item.offset
+                }))
             }))
         };
     }

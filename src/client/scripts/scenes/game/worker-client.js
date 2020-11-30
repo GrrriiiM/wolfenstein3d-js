@@ -16,6 +16,8 @@ class WorkerClient {
         this.stopMoveRight = () => this.server.postMessage({ command: "stopMoveRight" });
         this.stopRotateRight = () => this.server.postMessage({ command: "stopRotateRight" });
         this.stopRotateLeft = () => this.server.postMessage({ command: "stopRotateLeft" });
+
+        this.interact = () => this.server.postMessage({ command: "interact" });
         
         this.server.onmessage = event => {
             switch (event.data.command) {

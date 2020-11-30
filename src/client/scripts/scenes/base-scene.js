@@ -3,7 +3,7 @@ class BaseScene {
         this.renderer = renderer;
         this.backgroundColor = backgroundColor;
         this.border = renderer.w / 320;
-        this.margin = renderer.w / 64;
+        this.margin = renderer.w / 48;
     }
 
     onInit() {
@@ -32,6 +32,7 @@ class BaseScene {
     onStartMoveRight() {}
     onStartRotateRight() {}
     onStartRotateLeft() {}
+    onInteract() {}
     onStopMoveFront() {}
     onStopMoveBack() {}
     onStopMoveLeft() {}

@@ -14,6 +14,7 @@ class CommandManager {
             case "D": this._renderer.sceneManager.scene.onStartMoveRight(); break;
             case "ARROWRIGHT": this._renderer.sceneManager.scene.onStartRotateRight(); break;
             case "ARROWLEFT": this._renderer.sceneManager.scene.onStartRotateLeft(); break;
+            case " ": this._renderer.sceneManager.scene.onInteract(); break;
             default: break;
         }
     }

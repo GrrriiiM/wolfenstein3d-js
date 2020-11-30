@@ -9,6 +9,11 @@ class Block {
     get x() { return this._x; }
     get y() { return this._y; }
 
+
+    copy() {
+        return new this(this.x, this.y);
+    }
+
     _onchange() {
         this._x = Math.floor(this.pos.x);
         this._y = Math.floor(this.pos.y);

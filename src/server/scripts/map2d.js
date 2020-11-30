@@ -2,7 +2,8 @@ class Map2d {
     constructor(walls, items, sizeX, sizeY, config) {
         this.config = config;
         this.walls = walls.map(_ => new (require("./wall"))(_.x, _.y, _.id));
-        this.items = items.map(_ => (require("./item")).create(_.x, _.y, _.id));
+        this.items = items.map(_ => (require("./item")).create(_.x, _.y, _.id, this)).filter(_ => _);
+        this.doors = this.items.filter(_ => _.isDoor);
         this.size = { x: sizeX, y: sizeY };
         this.blocks = [];
         this.players = [];
@@ -21,12 +22,18 @@ class Map2d {
         return block instanceof require("./wall") ? block : null;
     }
 
+    getDoor(x, y) {
+        let block = this.blocks[x] ? this.blocks[x][y] : null;
+        return block instanceof require("./door") ? block : null;
+    }
+
     addPlayer(player) {
         this.players.push(player);
     }
 
     update() {
         this.players.forEach(_ => _.update());
+        this.doors.forEach(_ => _.update());
     }
 
     static create(mapPattern, config) {
@@ -39,7 +46,7 @@ class Map2d {
                 const x = i / 2;
                 lengthX = x + 1 > lengthX ? x + 1 : lengthX;
                 let id = parseInt(`${l[y][i]}${l[y][i+1]}`, 16);
-                if (id <= 55) {
+                if (id <= 48) {
                     walls.push({ x, y, id: id });
                 } else if (id <= 105) {
                     items.push({ x, y, id: id });

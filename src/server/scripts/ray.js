@@ -5,7 +5,19 @@ class Ray extends require("./block") {
         this.angle = (angle + Math.PI * 2) % (Math.PI * 2);
     }
 
-    cast() {
+    cast(items) {
+        this.wall = null;
+        this.items = [];
+        this.castWall();
+        if (this.wall) {
+            if (this.wall) {
+                const nextDoor = this.view.person.map2d.getDoor(this.isVertical ? this.wall.x + (this.isInverted ? 1 : -1) : this.wall.x, !this.isVertical ? this.wall.y + (this.isInverted ? 1 : -1) : this.wall.y);
+                this.isDoor = !!nextDoor;
+            }
+            this.castItems(items);
+        }
+    }
+    castWall() {
         const angle = this.calcAngle();
         const map2d = this.view.person.map2d;
         const dirX = this.calcDirV();
@@ -24,8 +36,9 @@ class Ray extends require("./block") {
                 if (this.wall) {
                     this.pos.setXY(Math.cos(angle) * distH, Math.sin(angle) * distH).add(this.view.person.pos);
                     this.distAdjusted = Math.abs(Math.cos(this.angle) * distH);
-                    this.wallOffset = this.view.person.y < this.wall.y ? this.offset.x : 1 - this.offset.x;
-                    this.vertical = false;
+                    this.isInverted = this.view.person.y > this.wall.y;
+                    this.wallOffset = this.offset.x;
+                    this.isVertical = false;
                     return;
                 }
                 distH += deltaDistH;
@@ -35,12 +48,20 @@ class Ray extends require("./block") {
                 if (this.wall) {
                     this.pos.setXY(Math.cos(angle) * distV, Math.sin(angle) * distV).add(this.view.person.pos);
                     this.distAdjusted = Math.abs(Math.cos(this.angle) * distV);
-                    this.wallOffset = this.view.person.x < this.wall.x ? this.offset.y : 1 - this.offset.y;
-                    this.vertical = true;
+                    this.isInverted = this.view.person.x > this.wall.x;
+                    this.wallOffset = this.offset.y;
+                    this.isVertical = true;
                     return;
                 }
                 distV += deltaDistV
             }
+        }
+    }
+
+    castItems(items) {
+        for(const i of items) {
+            let item = i.cast(this);
+            if (item) this.items.push(item);
         }
     }
 

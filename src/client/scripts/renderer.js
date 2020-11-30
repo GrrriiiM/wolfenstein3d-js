@@ -1,12 +1,12 @@
 const images = [
     "walls",
-    "decorations"
+    "items"
 ];
 
 class Renderer {
     constructor(sceneManager, commandManager, elementQuerySelector) {
-        this.w = 320;
-        this.h = 200;
+        this.w = 320 * 2;
+        this.h = 240 * 2;
         
         let querySelector = elementQuerySelector || "body";
         this.element = document.querySelector(querySelector);
@@ -46,7 +46,7 @@ class Renderer {
         images.forEach(_ => {
             var img = document.createElement("img");
             img.style = "display: none";
-            img.src = `assets/${_}.png`;
+            img.src = `client/assets/${_}.png`;
             element.appendChild(img);
             this.images[_] = img;
         })

@@ -63,6 +63,13 @@ class Vector2d {
         this.setXY(Math.floor(this.x), Math.floor(this.y));
         return this;
     }
+
+    norm() {
+        let m = this.mag;
+        if (m == 0) return this;
+        this.setXY(this._x / m, this._y / m);
+        return this;
+    }
 }
 
 module && (module.exports = Vector2d);

@@ -13,6 +13,7 @@ class GameScene extends BaseScene {
 
     onDraw() {
         super.onDraw();
+        this.state = this.client.state;
         this.gameArea.draw();
         this.displayArea.draw();
     }
@@ -28,6 +29,7 @@ class GameScene extends BaseScene {
     onStartMoveRight() { this.client.startMoveRight(); }
     onStartRotateRight() { this.client.startRotateRight(); }
     onStartRotateLeft() { this.client.startRotateLeft(); }
+    
     onStopMoveFront() { this.client.stopMoveFront(); }
     onStopMoveBack() { this.client.stopMoveBack(); }
     onStopMoveLeft() { this.client.stopMoveLeft(); }
@@ -35,4 +37,5 @@ class GameScene extends BaseScene {
     onStopRotateRight() { this.client.stopRotateRight(); }
     onStopRotateLeft() { this.client.stopRotateLeft(); }
 
+    onInteract() { this.client.interact(); }
 }
