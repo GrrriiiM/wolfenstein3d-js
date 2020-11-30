@@ -1,6 +1,26 @@
-[1102/171856.906:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
-[1104/224104.426:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
-[1105/201726.642:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
-[1105/212154.459:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
-[1106/143203.971:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
-[1106/202422.517:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[1118/225926.819:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[1118/235255.582:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[1119/003739.579:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[1119/011246.002:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[1119/220606.658:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[1122/231517.031:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[1125/235424.767:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[1127/134829.221:ERROR:crash_report_database_win.cc(498)] failed to stat report
+[1127/134829.225:ERROR:crash_report_database_win.cc(498)] failed to stat report
+[1127/134829.225:ERROR:crash_report_database_win.cc(498)] failed to stat report
+[1127/135454.795:ERROR:crash_report_database_win.cc(498)] failed to stat report
+[1127/135454.795:ERROR:crash_report_database_win.cc(498)] failed to stat report
+[1127/135454.795:ERROR:crash_report_database_win.cc(498)] failed to stat report
+[1127/140454.799:ERROR:crash_report_database_win.cc(498)] failed to stat report
+[1127/140454.799:ERROR:crash_report_database_win.cc(498)] failed to stat report
+[1127/140454.799:ERROR:crash_report_database_win.cc(498)] failed to stat report
+[1127/140454.799:ERROR:filesystem_win.cc(116)] GetFileAttributes C:\Users\allis\AppData\Local\Temp\.profile\Crashpad\reports\5764467a-9a65-4fe2-950f-43a4d30c295f.dmp: O sistema não pode encontrar o arquivo especificado. (0x2)
+[1127/140454.799:ERROR:filesystem_win.cc(116)] GetFileAttributes C:\Users\allis\AppData\Local\Temp\.profile\Crashpad\reports\380159ac-8d36-41ba-a0b3-b2a7ea450820.dmp: O sistema não pode encontrar o arquivo especificado. (0x2)
+[1127/140454.799:ERROR:filesystem_win.cc(116)] GetFileAttributes C:\Users\allis\AppData\Local\Temp\.profile\Crashpad\reports\c49ce05d-9d02-4b10-aa93-be88fa916a91.dmp: O sistema não pode encontrar o arquivo especificado. (0x2)
+[1127/140454.799:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[1128/162810.766:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[1128/184001.075:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[1128/205722.584:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[1129/125806.704:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[1129/214418.757:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[1129/225740.626:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
