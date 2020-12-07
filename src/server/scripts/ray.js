@@ -101,18 +101,12 @@ class Ray extends require("./block") {
     
     calcDeltaDistH() {
         const angle = this.calcAngle();
-        const dir = this.calcDirH()
-        if (dir == 1) return Math.abs((1 + Math.abs(1 - this.view.person.offset.y)) / Math.sin(angle)) - this.calcDistH();
-        if (dir == -1) return Math.abs((1 + Math.abs(this.view.person.offset.y)) / Math.sin(angle)) - this.calcDistH();
-        return Infinity;
+        return Math.abs(1 / Math.sin(angle));
     }
 
     calcDeltaDistV() {
         const angle = this.calcAngle();
-        const dir = this.calcDirV();
-        if (dir == 1) return Math.abs((1 + Math.abs(1 - this.view.person.offset.x)) / Math.cos(angle)) - this.calcDistV();
-        if (dir == -1) return Math.abs((1 + Math.abs(this.view.person.offset.x)) / Math.cos(angle)) - this.calcDistV();
-        return Infinity;
+        return Math.abs(1 / Math.cos(angle));
     }
 
 }

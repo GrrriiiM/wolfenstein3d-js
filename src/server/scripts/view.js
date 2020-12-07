@@ -4,7 +4,7 @@ class View {
         this.angleTotal = (Math.PI / 3);
         this.angle = angle;
         this.rays = [];
-        let c = 610;
+        let c = 320;
         // c = c % 2 ? c : c + 1;
         let s = this.angleTotal / (c - 1);
         for (let i = 0; i < c; i++) {
